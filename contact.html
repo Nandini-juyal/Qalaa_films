@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Qalaa Films</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      // Replace 'YOUR_PUBLIC_KEY' with the key from your EmailJS Account
+      emailjs.init("IyDMbAdEXr7MU3SA2");
+    })();
+  </script>
+
+  <style>
+    /* ... (I have kept all your original CSS here) ... */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --yellow: #F5C518;
+      --yellow-dark: #D4A017;
+      --black: #0A0A0A;
+      --black-mid: #111111;
+      --black-soft: #1A1A1A;
+      --white: #F5F0E8;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+    /* NAVBAR */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 60px; background: rgba(10,10,10,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(245,197,24,0.1); }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; line-height: 1; }
+    .logo span { color: var(--white); font-size: 0.45em; display: block; letter-spacing: 0.35em; font-family: 'DM Sans', sans-serif; font-weight: 300; margin-top: 2px; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { color: var(--white); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400; position: relative; opacity: 0.8; transition: 0.3s; }
+    .nav-links a:hover { opacity: 1; color: var(--yellow); }
+    .nav-cta { background: var(--yellow) !important; color: var(--black) !important; padding: 10px 24px !important; font-weight: 500 !important; opacity: 1 !important; }
+
+    /* PAGE HERO */
+    .page-hero { padding: 160px 60px 80px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .page-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 6rem); font-weight: 900; line-height: 1.05; }
+    .page-hero-title em { color: var(--yellow); font-style: italic; }
+
+    /* CONTACT SECTION */
+    .contact-section { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 0; min-height: 80vh; }
+    .contact-form-wrap { padding: 80px 60px; background: var(--yellow); }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .form-group label { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--black); font-weight: 700; }
+    .form-group input, .form-group textarea { background: rgba(255,255,255,0.35); border: 1px solid rgba(10,10,10,0.15); color: var(--black); padding: 14px 18px; outline: none; width: 100%; font-family: 'DM Sans', sans-serif; }
+
+    .btn-submit { background: var(--black); color: var(--yellow); border: none; padding: 18px 44px; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; transition: 0.3s; margin-top: 8px; }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .form-success { display: none; background: rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.2); padding: 20px 24px; margin-top: 20px; font-size: 0.9rem; color: var(--black); }
+
+    .contact-details-wrap { padding: 80px 60px; background: var(--yellow); }
+    .details-label { font-size: 1.6rem; color: var(--black); font-family: 'Playfair Display', serif; font-weight: 900; margin-bottom: 24px; display: block; }
+    .detail-value a { color: rgba(7, 0, 0, 0.826); text-decoration: none; }
+    .detail-value { color: rgba(10, 10, 10, 0.8); } /* Makes the plain text dark like the links */
+    .detail-value a { color: rgba(10, 10, 10, 0.8); text-decoration: none; }
+
+     /* FOOTER */
+    footer { background: var(--black-mid); border-top: 1px solid rgba(245,197,24,0.12); padding: 60px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 50px; }
+    .footer-brand .logo { font-size: 2.2rem; display: block; margin-bottom: 16px; }
+    .footer-tagline { font-size: 0.82rem; color: rgba(245,240,232,0.4); line-height: 1.7; max-width: 240px; }
+    .footer-col h4 { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--yellow); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { background: var(--black-mid); border-top: 1px solid rgba(255,255,255,0.04); padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom span { font-size: 0.75rem; color: rgba(245,240,232,0.3); }
+
+    
+    @media (max-width: 900px) {
+      .contact-section { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="website_first.html" class="logo">Qalaa<span>Films</span></a>
+    <ul class="nav-links">
+      <li><a href="website_first.html">Home</a></li>
+      <li><a href="website_first.html#about-section">About Us</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <h1 class="page-hero-title">Let's Create<br>Something <em>Great</em><br>Together.</h1>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-form-wrap">
+      <form id="contactForm">
+        <div class="form-group">
+          <label for="user_name">Name</label>
+          <input type="text" name="user_name" id="user_name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="user_email">Email Address</label>
+          <input type="email" name="user_email" id="user_email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="user_phone">Phone Number</label>
+          <input type="tel" name="user_phone" id="user_phone" />
+        </div>
+
+        <div class="form-group">
+          <label for="company_name">Company / Brand</label>
+          <input type="text" name="company_name" id="company_name" />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Tell Us About Your Project</label>
+          <textarea name="message" id="message" placeholder="Share your vision, timeline, budget range..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          Send Message
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+
+        <div class="form-success" id="formSuccess">
+          ✦ &nbsp; Thank you! Your inquiry has been sent.
+        </div>
+      </form>
+    </div>
+
+    <div class="contact-details-wrap">
+      <span class="details-label">Start with a Hello, <br> see where it goes!</span>
+      <div class="detail-block">
+        <div class="detail-value"><a href="mailto:qalaafilms.work@gmail.com">qalaafilms.work@gmail.com</a></div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-value"><a href="tel:+919599155041">+91 9599155041</a></div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-value">New Delhi, India</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <a href="website_first.html" class="logo">Qalaa<span style="display:inline;font-size:0.45em;letter-spacing:0.3em;font-family:'DM Sans',sans-serif;font-weight:300;"> Films</span></a>
+      <p class="footer-tagline">A Delhi based production house crafting cinematic stories that connect brands with audiences.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="website_first.html">Home</a></li>
+        <li><a href="website_first.html#about-section">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Ad Film Campaigns</a></li>
+        <li><a href="services.html">Corporate Films</a></li>
+        <li><a href="services.html">Content IPs</a></li>
+        <li><a href="services.html">Creative Direction</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/qalaafilms?igsh=anY3Z3J0c2kxeGk2">Instagram</a></li>
+        <li><a href="https://www.youtube.com/@QalaaFilms">YouTube</a></li>
+        <li><a href="mailto:qalaafilms.work@gmail.com">qalaafilms.work@gmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2025 Qalaa Films. All rights reserved.</span>
+    <span>Made with ✦ in Delhi</span>
+  </div>
+
+  <script>
+    // 3. UPDATED HANDLESUBMIT FOR ACTUAL EMAIL SENDING
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const btn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('formSuccess');
+    
+    // Instant UI Feedback
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    // Your verified Service ID and Template ID
+    emailjs.sendForm('service_675f3ha', 'template_jwqpg72', this)
+        .then(function() {
+            // Success state
+            successMsg.style.display = 'block';
+            btn.textContent = 'Sent ✦';
+            document.getElementById('contactForm').reset();
+            
+            // Optional: Hide success message after 5 seconds
+            setTimeout(() => { 
+                successMsg.style.display = 'none'; 
+                btn.textContent = 'Send Message';
+                btn.disabled = false;
+            }, 5000);
+
+        }, function(error) {
+            btn.textContent = 'Send Message';
+            btn.disabled = false;
+            alert("Failed to send. Please check your connection.");
+            console.log('Error:', error);
+        });
+});
+  </script>
+</body>
+</html>
