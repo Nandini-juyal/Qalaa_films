@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Qalaa Films</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --yellow: #F5C518;
+      --yellow-dark: #D4A017;
+      --black: #0A0A0A;
+      --black-mid: #111111;
+      --black-soft: #1A1A1A;
+      --white: #F5F0E8;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+    /* NAVBAR */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 60px; transition: background 0.4s, padding 0.4s; }
+    nav.scrolled { background: rgba(10,10,10,0.96); backdrop-filter: blur(10px); padding: 18px 60px; border-bottom: 1px solid rgba(245,197,24,0.1); }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; line-height: 1; }
+    .logo span { color: var(--white); font-size: 0.45em; display: block; letter-spacing: 0.35em; font-family: 'DM Sans', sans-serif; font-weight: 300; margin-top: 2px; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { color: var(--white); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400; position: relative; opacity: 0.8; transition: opacity 0.3s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--yellow); transition: width 0.3s; }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { background: var(--yellow) !important; color: var(--black) !important; padding: 10px 24px !important; font-weight: 500 !important; opacity: 1 !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      display: block;
+    }
+
+    .hero-fallback { position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a, #1a1400, #0a0a0a); z-index: 0; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.1) 100%); z-index: 1; }
+    .hero-content { position: relative; z-index: 2; padding: 0 60px 80px; max-width: 900px; }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--yellow); margin-bottom: 20px; display: block; animation: fadeUp 0.8s 0.3s both; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900; line-height: 1.05; margin-bottom: 28px; animation: fadeUp 0.9s 0.5s both; }
+    .hero-title em { color: var(--yellow); font-style: italic; }
+    .hero-sub { font-size: 1rem; line-height: 1.7; color: rgba(245,240,232,0.65); max-width: 520px; margin-bottom: 44px; font-weight: 300; animation: fadeUp 0.9s 0.7s both; }
+    .hero-actions { animation: fadeUp 0.9s 0.9s both; }
+    .btn-primary { background: var(--yellow); color: var(--black); padding: 16px 38px; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: background 0.3s, transform 0.2s; }
+    .btn-primary:hover { background: var(--yellow-dark); transform: translateY(-2px); }
+    .scroll-hint { position: absolute; bottom: 36px; right: 60px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 10px; animation: fadeIn 1s 1.4s both; }
+    .scroll-hint span { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.4); writing-mode: vertical-rl; }
+    .scroll-line { width: 1px; height: 50px; background: rgba(245,197,24,0.4); position: relative; overflow: hidden; }
+    .scroll-line::after { content: ''; position: absolute; top: -100%; width: 100%; height: 100%; background: var(--yellow); animation: scrollDrop 1.5s 1.4s infinite; }
+
+    /* TICKER */
+    .ticker-wrap { background: var(--yellow); padding: 14px 0; overflow: hidden; white-space: nowrap; }
+    .ticker-track { display: inline-flex; animation: ticker 20s linear infinite; }
+    .ticker-item { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--black); padding: 0 40px; }
+    .ticker-dot { color: rgba(10,10,10,0.35); margin: 0 10px; }
+
+    /* INTRO */
+    .intro-section { position: relative; padding: 70px 60px 60px; text-align: center; overflow: hidden; background: var(--black); border-top: 4px solid var(--yellow); }
+    .intro-section::before { content: ''; position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 70%); pointer-events: none; }
+    .intro-eyebrow { font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--yellow); margin-bottom: 32px; display: block; }
+    .intro-heading { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4.5vw, 4.5rem); font-weight: 900; line-height: 1.12; margin-bottom: 22px; max-width: 860px; margin-left: auto; margin-right: auto; color: var(--white); }
+    .intro-heading em { color: var(--yellow); font-style: italic; }
+    .intro-body { font-size: 1.05rem; line-height: 1.9; color: rgba(245,240,232,0.55); max-width: 760px; margin: 0 auto 36px; font-weight: 300; }
+    .film-strip { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+    .film-hole { width: 16px; height: 16px; border: 2px solid rgba(245,197,24,0.35); border-radius: 3px; background: rgba(245,197,24,0.08); }
+    .collab-line { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .collab-text { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 2.8vw, 2.6rem); font-weight: 700; font-style: italic; color: rgba(245,240,232,0.45); }
+    .collab-link { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 2.8vw, 2.6rem); font-weight: 900; font-style: italic; color: var(--yellow); text-decoration: none; display: inline-flex; align-items: center; gap: 12px; position: relative; transition: gap 0.3s; }
+    .collab-link::after { content: ''; position: absolute; bottom: 2px; left: 0; width: 100%; height: 2px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .collab-link:hover::after { transform: scaleX(1); }
+    .collab-link:hover { gap: 20px; }
+    .collab-link svg { width: 26px; height: 26px; }
+
+    /* SERVICES */
+    .what-section { padding: 60px 60px; background: var(--black-soft); border-top: 1px solid rgba(255,255,255,0.05); }
+    .what-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; }
+    .section-label { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--yellow); text-transform: uppercase; margin-bottom: 12px; display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; line-height: 1.2; color: var(--white); }
+    .section-title em { color: var(--yellow); font-style: italic; }
+    .see-all { color: var(--yellow); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; opacity: 0.8; transition: opacity 0.3s; }
+    .see-all:hover { opacity: 1; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .service-card { background: var(--black); padding: 48px 38px 60px; border: 1px solid rgba(255,255,255,0.04); position: relative; overflow: hidden; transition: border-color 0.3s; }
+    .service-card:nth-child(odd) { border-left: 3px solid var(--yellow); }
+    .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .service-card:hover { border-color: rgba(245,197,24,0.3); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: rgba(245,197,24,0.15); line-height: 1; margin-bottom: 20px; transition: color 0.3s; }
+    .service-card:hover .service-num { color: rgba(245,197,24,0.4); }
+    .service-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; line-height: 1.3; color: var(--white); }
+    .service-desc { font-size: 0.85rem; color: rgba(245,240,232,0.5); line-height: 1.7; }
+
+    /* WHY US */
+    .why-section { padding: 60px 60px; background: var(--black-soft); border-top: 4px solid var(--yellow); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .why-heading { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 900; line-height: 1.15; margin-bottom: 24px; margin-top: 14px; }
+    .why-heading em { color: var(--yellow); font-style: italic; }
+    .why-body { font-size: 0.95rem; line-height: 1.85; color: rgba(245,240,232,0.55); font-weight: 300; margin-bottom: 32px; }
+    .why-points { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .why-points li { display: flex; align-items: center; gap: 14px; font-size: 0.9rem; color: rgba(245,240,232,0.75); padding: 10px 14px; border-left: 2px solid transparent; transition: border-color 0.3s, background 0.3s; }
+    .why-points li:hover { border-left-color: var(--yellow); background: rgba(245,197,24,0.04); }
+    .why-points li::before { content: '✦'; color: var(--yellow); font-size: 0.7rem; flex-shrink: 0; }
+    .why-right { position: relative; display: flex; align-items: center; justify-content: center; }
+    .why-curve-wrap { position: relative; width: 100%; height: 600px; }
+    .why-svg { position: absolute; left: 50%; transform: translateX(-50%); top: 0; width: 300px; height: 580px; }
+    .wc-item { position: absolute; width: 200px; display: flex; flex-direction: column; gap: 8px; }
+    .wc-left  { left: 0; text-align: left; }
+    .wc-right { right: 0; text-align: right; align-items: flex-end; }
+    .wc-icon { font-size: 2rem; }
+    .wc-text h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--yellow); margin-bottom: 4px; }
+    .wc-text p { font-size: 0.8rem; color: rgba(245,240,232,0.45); line-height: 1.6; }
+
+    /* PROCESS */
+    .process-section { padding: 60px 60px; border-top: 1px solid rgba(255,255,255,0.05); background: var(--black); }
+    .process-label { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--yellow); text-transform: uppercase; margin-bottom: 14px; display: block; }
+    .process-heading { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; margin-bottom: 40px; }
+    .process-heading em { color: var(--yellow); font-style: italic; }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+    .process-steps::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: rgba(245,197,24,0.3); z-index: 0; }
+    .process-step { text-align: center; padding: 0 24px; position: relative; z-index: 1; }
+    .step-circle { width: 56px; height: 56px; border: 2px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--yellow); background: var(--black); transition: background 0.3s, color 0.3s; box-shadow: 0 0 0 6px rgba(245,197,24,0.07); }
+    .process-step:hover .step-circle { background: var(--yellow); color: var(--black); box-shadow: 0 0 0 10px rgba(245,197,24,0.12); }
+    .step-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .step-desc { font-size: 0.82rem; color: rgba(245,240,232,0.45); line-height: 1.65; }
+
+    /* BIG CTA */
+    .cta-section { padding: 80px 60px; text-align: center; position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.05); }
+    .cta-section::before { content: 'QALAA'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 26vw; color: rgba(245,197,24,0.025); pointer-events: none; }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 900; margin-bottom: 20px; position: relative; }
+    .cta-title em { color: var(--yellow); font-style: italic; }
+    .cta-sub { color: rgba(245,240,232,0.5); margin-bottom: 44px; font-size: 1rem; font-weight: 300; position: relative; }
+
+    /* FOOTER */
+    footer { background: var(--black-mid); border-top: 1px solid rgba(245,197,24,0.12); padding: 60px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 50px; }
+    .footer-brand .logo { font-size: 2.2rem; display: block; margin-bottom: 16px; }
+    .footer-tagline { font-size: 0.82rem; color: rgba(245,240,232,0.4); line-height: 1.7; max-width: 240px; }
+    .footer-col h4 { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--yellow); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { background: var(--black-mid); border-top: 1px solid rgba(255,255,255,0.04); padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom span { font-size: 0.75rem; color: rgba(245,240,232,0.3); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scrollDrop { 0% { top: -100%; } 100% { top: 200%; } }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <a href="website_first.html" class="logo">Qalaa<span>Films</span></a>
+    <ul class="nav-links">
+      <li><a href="website_first.html">Home</a></li>
+      <li><a href="#about-section">About Us</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="home_video.mp4" type="video/mp4">
+    </video>
+    
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">&#9670; A Production House That Tells Your Story</span>
+      <h1 class="hero-title">Where Every<br>Frame <em>Speaks</em><br>Volumes.</h1>
+      <p class="hero-sub">Qalaa Films crafts cinematic stories from ad films and brand campaigns to documentaries and digital content that leave a lasting impression.</p>
+      <div class="hero-actions">
+        <a href="services.html" class="btn-primary">
+          Our Services
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item">Ad Film Campaigns <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Corporate Films <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Brand Storytelling <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Documentary <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Content IPs <span class="ticker-dot">✦</span></span>
+    
+      <span class="ticker-item">Creative Direction <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Ad Film Campaigns <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Corporate Films <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Brand Storytelling <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Documentary <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Content IPs <span class="ticker-dot">✦</span></span>
+      
+      <span class="ticker-item">Creative Direction <span class="ticker-dot">✦</span></span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <section id="about-section" class="intro-section">
+    <span class="intro-eyebrow">✦ &nbsp; Welcome to Qalaa Films &nbsp; ✦</span>
+    <h2 class="intro-heading">We Don't Just Make Films.<br>We Make People <em>Feel</em> something.</h2>
+    <p class="intro-body">Qalaa Films is a Delhi based creative production house built on one belief — every brand has a story worth telling, and every story deserves to be told beautifully. From highimpact Ad film campaigns and cinematic brand films to social media content that stops the scroll, we bring together sharp creative vision, technical excellence, and a deep understanding of what moves people. We're not just your production crew  we're your creative partners, obsessed with making work that's bold, authentic, and impossible to ignore.</p>
+    <div class="film-strip">
+      <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+      <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+      <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+      <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    </div>
+    <div class="collab-line">
+      <span class="collab-text">Got a vision?</span>
+      <a href="contact.html" class="collab-link">
+        Let's Collaborate
+        <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="what-section">
+    <div class="what-top">
+      <div>
+        <span class="section-label">02 — What We Do</span>
+        <h2 class="section-title">Our <em>Services</em></h2>
+      </div>
+      <a href="services.html" class="see-all">All Services <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+    </div>
+    <div class="services-grid">
+      <div class="service-card"><div class="service-num">01</div><h3 class="service-name">Ad Film Campaigns</h3><p class="service-desc">Highi mpact commercials that tell your brand story in seconds and stay in minds for years.</p></div>
+      <div class="service-card"><div class="service-num">02</div><h3 class="service-name">Corporate Films</h3><p class="service-desc">Polished, professional films that communicate your brand's vision, values, and culture.</p></div>
+      <div class="service-card"><div class="service-num">03</div><h3 class="service-name">Content IPs</h3><p class="service-desc">Scroll stopping content crafted for every platform — Reels, Shorts, Stories, and more.</p></div>
+      <div class="service-card"><div class="service-num">04</div><h3 class="service-name">Brand Films </h3><p class="service-desc">Elevating your brand identity through immersive, cinematic storytelling that captivates and connects.</p></div>
+      <div class="service-card"><div class="service-num">05</div><h3 class="service-name">Documentaries</h3><p class="service-desc">Compelling long-form stories that dive deep into real people, places, and experiences.</p></div>
+      <div class="service-card"><div class="service-num">06</div><h3 class="service-name">Creative Direction</h3><p class="service-desc">From concept to final cut  we shape the creative vision that makes your brand unforgettable.</p></div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-section">
+    <div class="why-grid">
+      <div class="why-left">
+        <span class="section-label">03 — Why Qalaa</span>
+        <h2 class="why-heading">Built Different.<br><em>Built for You.</em></h2>
+        <p class="why-body">We're not a factory. We're a team of passionate filmmakers, storytellers, and creative minds who genuinely care about the work we put out. Every project gets our full attention, obsession, and heart.</p>
+        <ul class="why-points">
+          <li>End-to-end creative and production support</li>
+          <li>Tailored strategies for every brand and budget</li>
+          <li>On-time delivery with zero compromise on quality</li>
+          <li>Transparent communication at every stage</li>
+          <li>A team that treats your brand like their own</li>
+        </ul>
+      </div>
+      <div class="why-right">
+        <div class="why-curve-wrap">
+          <svg class="why-svg" viewBox="0 0 300 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M150 30 C230 30, 260 100, 260 140 C260 180, 150 200, 150 240 C150 280, 40 300, 40 340 C40 380, 150 400, 150 440 C150 480, 200 520, 150 550" stroke="rgba(245,197,24,0.35)" stroke-width="1.8" stroke-dasharray="6 8" fill="none"/>
+            <circle cx="150" cy="30"  r="6" fill="#F5C518"/>
+            <circle cx="260" cy="140" r="6" fill="#F5C518"/>
+            <circle cx="40"  cy="340" r="6" fill="#F5C518"/>
+            <circle cx="150" cy="550" r="6" fill="#F5C518"/>
+          </svg>
+          <div class="wc-item wc-left" style="top: 0px;"><span class="wc-icon">🎬</span><div class="wc-text"><h4>Cinematic Quality</h4><p>Every frame crafted with precision and intention.</p></div></div>
+          <div class="wc-item wc-right" style="top: 110px;"><span class="wc-icon">💡</span><div class="wc-text"><h4>Bold Ideas</h4><p>We push creative boundaries and never settle for ordinary.</p></div></div>
+          <div class="wc-item wc-left" style="top: 300px;"><span class="wc-icon">⚡</span><div class="wc-text"><h4>Fast Turnaround</h4><p>Deadlines are sacred. Quality work, always on time.</p></div></div>
+          <div class="wc-item wc-right" style="top: 440px;"><span class="wc-icon">🤝</span><div class="wc-text"><h4>True Partnership</h4><p>Your success is our success. We work with you, not just for you.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section">
+    <span class="process-label">04 — How We Work</span>
+    <h2 class="process-heading">Our Creative <em>Process</em></h2>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-circle">01</div><h3 class="step-title">Discovery</h3><p class="step-desc">We sit down, listen deeply, and understand your brand, goals, and audience before anything else.</p></div>
+      <div class="process-step"><div class="step-circle">02</div><h3 class="step-title">Concept</h3><p class="step-desc">We craft a bold creative concept and strategy tailored specifically for your story and vision.</p></div>
+      <div class="process-step"><div class="step-circle">03</div><h3 class="step-title">Production</h3><p class="step-desc">Lights, camera, action. Our crew brings the concept to life with cinematic precision on set.</p></div>
+      <div class="process-step"><div class="step-circle">04</div><h3 class="step-title">Delivery</h3><p class="step-desc">Post production, final polish, and a finished film that exceeds every expectation. On time, every time.</p></div>
+    </div>
+  </section>
+
+  <!-- BIG CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Ready to create<br>something <em>unforgettable?</em></h2>
+    <p class="cta-sub">Let's sit down, talk stories, and build something great together.</p>
+    <a href="contact.html" class="btn-primary" style="margin: 0 auto; display: inline-flex;">
+      Get in Touch
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a href="website_first.html" class="logo">Qalaa<span style="display:inline;font-size:0.45em;letter-spacing:0.3em;font-family:'DM Sans',sans-serif;font-weight:300;"> Films</span></a>
+      <p class="footer-tagline">A Delhi based production house crafting cinematic stories that connect brands with audiences.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="website_first.html">Home</a></li>
+        <li><a href="#about-section">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Ad Film Campaigns</a></li>
+        <li><a href="services.html">Corporate Films</a></li>
+        <li><a href="services.html">Content IPs</a></li>
+        <li><a href="services.html">Creative Direction</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/qalaafilms?igsh=anY3Z3J0c2kxeGk2">Instagram</a></li>
+        <li><a href="https://www.youtube.com/@QalaaFilms">YouTube</a></li>
+        <li><a href="mailto:qalaafilms.work@gmail.com">qalaafilms.work@gmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2025 Qalaa Films. All rights reserved.</span>
+    <span>Made with ✦ in Delhi</span>
+  </body>
+  </html>
+
+
+
+
+
+  
